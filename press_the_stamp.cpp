@@ -1,5 +1,8 @@
 // SPDX-FileCopyrightText: 2023 Keitaro Nakamura,Ryotaro karikomi
+// SPDX-FileCopyrightText: 2024 Haruto Yamamoto
 // SPDX-License-Identifier: Apache 2.0
+# このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され、その後Haruto Yamamotoによって変更されました。
+# 変更内容：アームの開閉をコメントアウト, その移動を大幅削除, Z座標のみを上下させる動作を追加 （ここに変更点を記載）
 #include <cmath>
 
 #include "angles/angles.h"
@@ -68,19 +71,19 @@ int main(int argc, char ** argv)
 //  return 0;
 
 //アームを閉じる
-//  gripper_joint_values[0] = angles::from_degrees(1);
+//  gripper_joint_values[0] = angles::from_degrees(15);
 //  move_group_gripper.setJointValueTarget(gripper_joint_values);
 //  move_group_gripper.move();
 //  return 0;
 
   //ハンコを押す動作
-  float arm_updown[6] = {0.25, 0.17, 0.12, 0.082, 0.14, 0.25};
+  float arm_updown[6] = {0.25, 0.17, 0.12, 0.05, 0.14, 0.25};
   for (int i = 0; i<= 5; i+=1){
   geometry_msgs::msg::Pose target_pose;
   tf2::Quaternion q;
   
-  target_pose.position.x = 0.3;
-  target_pose.position.y = -0.3;
+  target_pose.position.x = 0.5;
+  target_pose.position.y = 0.0;
   target_pose.position.z = arm_updown[i];
   q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(90));
   target_pose.orientation = tf2::toMsg(q);
@@ -88,7 +91,6 @@ int main(int argc, char ** argv)
   move_group_arm.move();
 }
  
-//なんとなく真ん中へ
   geometry_msgs::msg::Pose target_pose;
   tf2::Quaternion q;
 

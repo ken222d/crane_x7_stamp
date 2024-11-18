@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2023 Keitaro Nakamura,Ryotaro karikomi
 // SPDX-FileCopyrightText: 2024 Haruto Yamamoto
 // SPDX-License-Identifier: Apache 2.0
-# このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され、その後Haruto Yamamotoによって変更されました。
-# 変更内容：アームの開閉をコメントアウト, その他移動を大幅削除, Z座標のみを上下させる動作を追加
+// このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され、その後Haruto Yamamotoによって変更されました。
+// 変更内容：アームの開閉をコメントアウト, その他移動を大幅削除, Z座標のみを上下させる動作を追加
 #include <cmath>
 
 #include "angles/angles.h"

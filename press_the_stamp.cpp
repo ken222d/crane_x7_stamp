@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: 2024 Haruto Yamamoto
 // SPDX-License-Identifier: Apache 2.0
 # このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され、その後Haruto Yamamotoによって変更されました。
-# 変更内容：アームの開閉をコメントアウト, その移動を大幅削除, Z座標のみを上下させる動作を追加 （ここに変更点を記載）
+# 変更内容：アームの開閉をコメントアウト, その他移動を大幅削除, Z座標のみを上下させる動作を追加
 #include <cmath>
 
 #include "angles/angles.h"
@@ -91,6 +91,7 @@ int main(int argc, char ** argv)
   move_group_arm.move();
 }
  
+//なんとなく真ん中へ
   geometry_msgs::msg::Pose target_pose;
   tf2::Quaternion q;
 

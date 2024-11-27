@@ -37,14 +37,8 @@ private:
 
     // 固定座標を設定
     t.transform.translation.x = 0.5;
-    t.transform.translation.y = 0.0;
-    t.transform.translation.z = 0.05;
-
-    // ここ後で消してもいいかも
-    t.transform.rotation.x = 0.0;
-    t.transform.rotation.y = 0.0;
-    t.transform.rotation.z = 0.0;
-    t.transform.rotation.w = 1.0;
+    t.transform.translation.y = 0.4;
+    t.transform.translation.z = 0.2;
 
     tf_broadcaster_->sendTransform(t);
 

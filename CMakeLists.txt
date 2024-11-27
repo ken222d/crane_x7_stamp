@@ -1,7 +1,7 @@
 # このファイルはKeitaro NakamuraとRyotaro Karikomiによって作成され, その後Akira Matsumotoによって変更されました.
 # 変更内容：fixed_position_publisherの追加
 cmake_minimum_required(VERSION 3.5)
-project(crane_x7_simple_examples)
+project(crane_x7_stamp)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)

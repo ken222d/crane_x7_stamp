@@ -2,7 +2,9 @@
 # Copyright 2024 Akira Matsumoto
 # SPDX-License-Identifier: Apache 2.0
 # このファイルはKeitaro Nakamuraによって作成されたcamera_picking.launch.pyをコピーし, 一部を改変したものです.
-# もとのファイルでcolor_detection.cppだった部分が, fixed_position_publisher.cppとなっています.
+# 変更内容
+#   color_detection.cpp : fixed_position_publisher.cpp
+#   crane_x7_simple_example : crane_x7_stamp
 
 import os
 
@@ -55,15 +57,15 @@ def generate_launch_description():
     )
     # アームの動きのコードを起動するのはこっち
     picking_node = Node(# name="pick_and_move_tf",
-                        package='crane_x7_simple_examples',
+                        package='crane_x7_stamp',
                         executable='pick_and_move_tf',
                         output='screen',
                         parameters=[{'robot_description': description_loader.load()},
                                     robot_description_semantic,
                                     kinematics_yaml])
-    # 画像処理のコードを起動するのはこっち
+    # 固定座標を送るコードを起動するのはこっち
     detection_node = Node(# name='fixed_position_publisher'
-                          package='crane_x7_simple_examples',
+                          package='crane_x7_stamp',
                           executable='fixed_position_publisher',
                           output='screen')
 

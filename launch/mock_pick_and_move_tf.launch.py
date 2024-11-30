@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache 2.0
 # このファイルはKeitaro Nakamuraによって作成されたcamera_picking.launch.pyをコピーし, 一部を改変したものです.
 # 変更内容
-#   color_detection.cpp : fixed_position_publisher.cpp
+#   color_detection : fixed_position_publisher
 #   crane_x7_simple_example : crane_x7_stamp
 
 import os

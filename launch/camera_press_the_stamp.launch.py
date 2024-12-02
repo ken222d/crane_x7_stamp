@@ -55,7 +55,7 @@ def generate_launch_description():
     )
     # アームの動きのコードを起動するのはこっち
     picking_node = Node(# name="pick_and_move_tf",
-                        package='crane_x7_simple_examples',
+                        package='crane_x7_stamp',
                         executable='press_the_stamp',
                         output='screen',
                         parameters=[{'robot_description': description_loader.load()},
@@ -63,7 +63,7 @@ def generate_launch_description():
                                     kinematics_yaml])
     # 画像処理のコードを起動するのはこっち
     detection_node = Node(# name='color_detection'
-                          package='crane_x7_simple_examples',
+                          package='crane_x7_stamp',
                           executable='color_detection',
                           output='screen')
 

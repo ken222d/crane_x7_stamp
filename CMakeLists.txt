@@ -61,16 +61,39 @@ ament_target_dependencies(pick_and_move_tf
     rclcpp
     tf2_geometry_msgs
 )
-
 add_executable(fixed_position_publisher
   src/fixed_position_publisher.cpp
 )
-
 ament_target_dependencies(fixed_position_publisher
     rclcpp
     geometry_msgs
     tf2_ros
 )
+add_executable(press_the_stamp
+  src/press_the_stamp.cpp
+)
+ament_target_dependencies(press_the_stamp
+    cv_bridge
+    geometry_msgs
+    image_geometry
+    moveit_ros_planning_interface
+    OpenCV
+    rclcpp
+    tf2_geometry_msgs
+)
+add_executable(press_the_stamp_tf
+  src/press_the_stamp_tf.cpp
+)
+ament_target_dependencies(press_the_stamp_tf
+    cv_bridge
+    geometry_msgs
+    image_geometry
+    moveit_ros_planning_interface
+    OpenCV
+    rclcpp
+    tf2_geometry_msgs
+)
+
 
 # src下のソースコードはTARGETSで
 # launch下のlaunchファイルはDIRECTORYで
@@ -88,6 +111,14 @@ install(TARGETS
 )
 install(TARGETS
   fixed_position_publisher
+  DESTINATION lib/${PROJECT_NAME}/
+)
+install(TARGETS
+  press_the_stamp
+  DESTINATION lib/${PROJECT_NAME}/
+)
+install(TARGETS
+  press_the_stamp_tf
   DESTINATION lib/${PROJECT_NAME}/
 )
 install(DIRECTORY

@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: 2024 Haruto Yamamoto
 // SPDX-License-Identifier: Apache 2.0
 // このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され、その後Haruto Yamamotoによって変更されました。
-// 変更内容：アームの開閉をコメントアウト, その他移動を大幅削除, Z座標のみを上下させる動作を追加
+// 変更内容：グリッパーの開閉をコメントアウト, その他移動を大幅削除, Z座標のみを上下させる動作を追加
 #include <cmath>
 
 #include "angles/angles.h"
@@ -64,13 +64,13 @@ int main(int argc, char ** argv)
 
   move_group_arm.setPathConstraints(constraints);
 
-//アームを開く
+//グリッパーを開く
 //  gripper_joint_values[0] = angles::from_degrees(60);
 //  move_group_gripper.setJointValueTarget(gripper_joint_values);
 //  move_group_gripper.move();
 //  return 0;
 
-//アームを閉じる
+//グリッパーを閉じる
 //  gripper_joint_values[0] = angles::from_degrees(15);
 //  move_group_gripper.setJointValueTarget(gripper_joint_values);
 //  move_group_gripper.move();

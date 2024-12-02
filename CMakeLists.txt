@@ -1,5 +1,7 @@
+# このファイルはKeitaro NakamuraとRyotaro Karikomiによって作成され, その後Akira Matsumotoによって変更されました.
+# 変更内容：fixed_position_publisherの追加
 cmake_minimum_required(VERSION 3.5)
-project(crane_x7_simple_examples)
+project(crane_x7_stamp)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -35,19 +37,6 @@ ament_target_dependencies(color_detection
     tf2_geometry_msgs
 )
 # ここまででコードに必要なものを記述
-add_executable(press_the_stamp
-  src/press_the_stamp.cpp
-)
-ament_target_dependencies(press_the_stamp
-    cv_bridge
-    geometry_msgs
-    image_geometry
-    moveit_ros_planning_interface
-    OpenCV
-    rclcpp
-    tf2_geometry_msgs
-)
-
 add_executable(pick_and_move
   src/pick_and_move.cpp
 )
@@ -64,6 +53,26 @@ add_executable(pick_and_move_tf
   src/pick_and_move_tf.cpp
 )
 ament_target_dependencies(pick_and_move_tf
+    cv_bridge
+    geometry_msgs
+    image_geometry
+    moveit_ros_planning_interface
+    OpenCV
+    rclcpp
+    tf2_geometry_msgs
+)
+add_executable(fixed_position_publisher
+  src/fixed_position_publisher.cpp
+)
+ament_target_dependencies(fixed_position_publisher
+    rclcpp
+    geometry_msgs
+    tf2_ros
+)
+add_executable(press_the_stamp
+  src/press_the_stamp.cpp
+)
+ament_target_dependencies(press_the_stamp
     cv_bridge
     geometry_msgs
     image_geometry
@@ -93,26 +102,25 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}/
 )
 install(TARGETS
-  press_the_stamp 
-  DESTINATION lib/${PROJECT_NAME}/
-)
-
-install(TARGETS
   pick_and_move 
   DESTINATION lib/${PROJECT_NAME}/
 )
-
 install(TARGETS
   pick_and_move_tf
   DESTINATION lib/${PROJECT_NAME}/
 )
-
+install(TARGETS
+  fixed_position_publisher
+  DESTINATION lib/${PROJECT_NAME}/
+)
+install(TARGETS
+  press_the_stamp
+  DESTINATION lib/${PROJECT_NAME}/
+)
 install(TARGETS
   press_the_stamp_tf
   DESTINATION lib/${PROJECT_NAME}/
 )
-
-
 install(DIRECTORY
   launch
   DESTINATION share/${PROJECT_NAME}/

@@ -157,11 +157,12 @@ private:
     for (int i = 0; i<= 4; i+=1){
     control_arm(target_position.x(), target_position.y(), target_position.z() + arm_updown[i], 90, 0, 90);
     }
-	
-
 
     // 初期姿勢に戻る
     init_pose();
+    // 一度pickingが行われたら、コードを終了する
+    RCLCPP_INFO(this->get_logger(), "Pressing operation completed, shutting down...");
+    rclcpp::shutdown();
   }
 
   // グリッパ制御

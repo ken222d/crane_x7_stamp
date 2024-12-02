@@ -16,7 +16,12 @@ public:
   FixedPositionPublisher()
   : Node("fixed_position_publisher")
   {
+ 
     tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
+
+    timer_ = this->create_wall_timer(
+      std::chrono::seconds(1),
+      std::bind(&FixedPositionPublisher::send_fixed_transform, this));
   }
 
 private:
@@ -26,14 +31,24 @@ private:
   void send_fixed_transform()
   {
     geometry_msgs::msg::TransformStamped t;
+    t.header.stamp = this->get_clock()->now();  
+    t.header.frame_id = "world"; 
     t.child_frame_id = "target_0";  
 
     // 固定座標を設定
     t.transform.translation.x = 0.5;
-    t.transform.translation.y = 0.4;
-    t.transform.translation.z = 0.2;
+    t.transform.translation.y = 0.0;
+    t.transform.translation.z = 0.05;
+
+    // ここ後で消してもいいかも
+    t.transform.rotation.x = 0.0;
+    t.transform.rotation.y = 0.0;
+    t.transform.rotation.z = 0.0;
+    t.transform.rotation.w = 1.0;
 
     tf_broadcaster_->sendTransform(t);
+
+    RCLCPP_INFO(this->get_logger(), "固定座標: [0.5, 0.0, 0.05]");
   }
 };
 

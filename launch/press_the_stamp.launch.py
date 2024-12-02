@@ -55,7 +55,7 @@ def generate_launch_description():
     )
     #パッケージ名の変更、実行するコードの変更は以下を編集してください
     example_node = Node(
-                        package='crane_x7_simple_examples',
+                        package='crane_x7_stamp',
                         #executable='press_the_stamp',
 			executable='pick_and_move',
                         output='screen',

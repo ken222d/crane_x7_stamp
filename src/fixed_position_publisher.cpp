@@ -36,9 +36,9 @@ private:
     t.child_frame_id = "target_0";  
 
     // 固定座標を設定
-    t.transform.translation.x = 0.4;
-    t.transform.translation.y = 0.2;
-    t.transform.translation.z = 0.05;
+    t.transform.translation.x = 0.5;
+    t.transform.translation.y = 0.1;
+    t.transform.translation.z = 0.1;
 
     // ここ後で消してもいいかも
     t.transform.rotation.x = 0.0;

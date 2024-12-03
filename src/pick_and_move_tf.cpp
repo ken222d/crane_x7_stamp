@@ -4,7 +4,6 @@
 #include <cmath>
 #include <memory>
 #include <vector>
-
 #include "angles/angles.h"
 #include "geometry_msgs/msg/pose.hpp"
 #include "geometry_msgs/msg/quaternion.hpp"
@@ -20,7 +19,6 @@
 #include "std_msgs/msg/string.hpp"
 using namespace std::chrono_literals;
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
-
 class PickAndPlaceTf : public rclcpp::Node
 {
 public:
@@ -33,15 +31,12 @@ public:
     move_group_arm_ = std::make_shared<MoveGroupInterface>(move_group_arm_node, "arm");
     move_group_arm_->setMaxVelocityScalingFactor(0.7);
     move_group_arm_->setMaxAccelerationScalingFactor(0.7);
-
     move_group_gripper_ = std::make_shared<MoveGroupInterface>(move_group_gripper_node, "gripper");
     move_group_gripper_->setMaxVelocityScalingFactor(1.0);
     move_group_gripper_->setMaxAccelerationScalingFactor(1.0);
-
     // SRDFに定義されている"home"の姿勢にする
     move_group_arm_->setNamedTarget("home");
     move_group_arm_->move();
-
     // 可動範囲を制限する
     moveit_msgs::msg::Constraints constraints;
     constraints.name = "arm_constraints";
@@ -53,39 +48,30 @@ public:
     joint_constraint.tolerance_below = angles::from_degrees(90);
     joint_constraint.weight = 1.0;
     constraints.joint_constraints.push_back(joint_constraint);
-
     joint_constraint.joint_name = "crane_x7_upper_arm_revolute_part_twist_joint";
     joint_constraint.position = 0.0;
     joint_constraint.tolerance_above = angles::from_degrees(90);
     joint_constraint.tolerance_below = angles::from_degrees(90);
     joint_constraint.weight = 0.8;
     constraints.joint_constraints.push_back(joint_constraint);
-
     move_group_arm_->setPathConstraints(constraints);
-
-
     // 真上から見下ろす撮影姿勢
     // crane_x7_upper_arm_revolute_part_rotate_jointにかかる負荷が高いため長時間の使用に向いておりません
     // control_arm(0.15, 0.0, 0.3, -180, 0, 90);
-
     // 関節への負荷が低い撮影姿勢
     init_pose();
-
     tf_buffer_ =
       std::make_unique<tf2_ros::Buffer>(this->get_clock());
     tf_listener_ =
       std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
-
     timer_ = this->create_wall_timer(
       500ms, std::bind(&PickAndPlaceTf::on_timer, this));
   }
-
 private:
   void on_timer()
   {
     // target_0のtf位置姿勢を取得
     geometry_msgs::msg::TransformStamped tf_msg;
-
     try {
       tf_msg = tf_buffer_->lookupTransform(
         "base_link", "target_0",
@@ -96,7 +82,6 @@ private:
         ex.what());
       return;
     }
-
     rclcpp::Time now = this->get_clock()->now();
     const std::chrono::nanoseconds FILTERING_TIME = 2s;
     const std::chrono::nanoseconds STOP_TIME_THRESHOLD = 3s;
@@ -106,7 +91,6 @@ private:
     const auto TF_ELAPSED_TIME = now.nanoseconds() - tf.stamp_.time_since_epoch().count();
     const auto TF_STOP_TIME = now.nanoseconds() - tf_past_.stamp_.time_since_epoch().count();
     const double TARGET_Z_MIN_LIMIT = 0.04;
-
     // 現在時刻から2秒以内に受け取ったtfを使用
     if (TF_ELAPSED_TIME < FILTERING_TIME.count()) {
       double tf_diff = (tf_past_.getOrigin() - tf.getOrigin()).length();
@@ -125,7 +109,6 @@ private:
       }
     }
   }
-
   void init_pose()
   {
     std::vector<double> joint_values;
@@ -139,48 +122,35 @@ private:
     move_group_arm_->setJointValueTarget(joint_values);
     move_group_arm_->move();
   }
-
   void picking(tf2::Vector3 target_position)
   {
     const double GRIPPER_DEFAULT = 0.0;
     const double GRIPPER_OPEN = angles::from_degrees(60.0);
     const double GRIPPER_CLOSE = angles::from_degrees(15.0);
-
     // 何かを掴んでいた時のためにハンドを開閉
     control_gripper(GRIPPER_OPEN);
     control_gripper(GRIPPER_DEFAULT);
-
     // 掴む準備をする
     control_arm(target_position.x() - 0.2, target_position.y(), target_position.z() + 0.03, 90, 0, 90);
-
     // ハンドを開く
     control_gripper(GRIPPER_OPEN);
-
     // 掴みに行く
     control_arm(target_position.x(), target_position.y(), target_position.z() + 0.03, 90, 0, 90);
-
     // ハンドを閉じる
     control_gripper(GRIPPER_CLOSE);
-
     // 一度初期姿勢に戻る
     init_pose();
-
     // 移動する
     control_arm(0.3, 0.15, 0.2, 90, 0, 90);
-
     // 下ろす
     control_arm(0.3, 0.15, 0.1, 90, 0, 90);
-
     // ハンドを開く
     control_gripper(GRIPPER_OPEN);
-
     // 初期姿勢に戻る
     init_pose();
-
     // ハンドを閉じる
     control_gripper(GRIPPER_DEFAULT);
   }
-
   // グリッパ制御
   void control_gripper(const double angle)
   {
@@ -189,7 +159,6 @@ private:
     move_group_gripper_->setJointValueTarget(joint_values);
     move_group_gripper_->move();
   }
-
   // アーム制御
   void control_arm(
     const double x, const double y, const double z,
@@ -205,7 +174,6 @@ private:
     move_group_arm_->setPoseTarget(target_pose);
     move_group_arm_->move();
   }
-
   std::shared_ptr<MoveGroupInterface> move_group_arm_;
   std::shared_ptr<MoveGroupInterface> move_group_gripper_;
   std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
@@ -213,7 +181,6 @@ private:
   rclcpp::TimerBase::SharedPtr timer_{nullptr};
   tf2::Stamped<tf2::Transform> tf_past_;
 };
-
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
@@ -221,7 +188,6 @@ int main(int argc, char ** argv)
   node_options.automatically_declare_parameters_from_overrides(true);
   auto move_group_arm_node = rclcpp::Node::make_shared("move_group_arm_node", node_options);
   auto move_group_gripper_node = rclcpp::Node::make_shared("move_group_gripper_node", node_options);
-
   rclcpp::executors::MultiThreadedExecutor exec;
   auto pick_and_move_tf_node = std::make_shared<PickAndPlaceTf>(
     move_group_arm_node,

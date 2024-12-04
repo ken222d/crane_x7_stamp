@@ -4,22 +4,22 @@
 // このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され、その後Haruto YamamotoとAkira Matsumoyoによって変更されました。
 
 // 設計方針
-//	 関数picking : stamping
-//	 	こんな感じで書きたい
-//	 		ハンドを開閉する動作を削除
-//	 		init_poseで始まりinit_poseで終わる
-//	 		control_armを10回に分けて目標座標（target_position.x(), target_position.y(), 0.1）まで移動
-//			control_armを5回に分けてハンコを押す（z座標を0.1から0.05まで移動）
-//			rclcpp::shutdown();
-//		構成
-//			変数の定義
-//			init_pose
-//			xyz座標を移動するfor文
-//			z座標を移動するfor文
-//			init_pose
-//			rclcpp::shutdown();
+//    関数picking : stamping
+//        こんな感じで書きたい
+//            ハンドを開閉する動作を削除
+//            init_poseで始まりinit_poseで終わる
+//            control_armを10回に分けて目標座標（target_position.x(), target_position.y(), 0.1）まで移動
+//            control_armを5回に分けてハンコを押す（z座標を0.1から0.05まで移動）
+//            rclcpp::shutdown();
+//        構成
+//            変数の定義
+//            init_pose
+//            xyz座標を移動するfor文
+//            z座標を移動するfor文
+//            init_pose
+//            rclcpp::shutdown();
 //
-//	 関節の角度を制限（90 : 60）
+//    関節の角度を制限（90 : 60）
 
 #include <chrono>
 #include <cmath>
@@ -39,6 +39,7 @@
 #include "tf2_ros/transform_listener.h"
 #include "tf2_ros/buffer.h"
 #include "std_msgs/msg/string.hpp"
+
 using namespace std::chrono_literals;
 using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 
@@ -66,11 +67,11 @@ public:
     // 可動範囲を制限する
     moveit_msgs::msg::Constraints constraints;
     constraints.name = "arm_constraints";
-    
+
     moveit_msgs::msg::JointConstraint joint_constraint;
     joint_constraint.joint_name = "crane_x7_lower_arm_fixed_part_joint";
     joint_constraint.position = 0.0;
-    joint_constraint.tolerance_above = angles::from_degrees(90);  //ここ以下４つの角度を増やすと可動域が増えます。ただし大きい動きにになることがあるので注意が必要です。
+    joint_constraint.tolerance_above = angles::from_degrees(90);  // ここ以下4つの角度を増やすと可動域が増えます。ただし大きい動きになることがあるので注意が必要です。
     joint_constraint.tolerance_below = angles::from_degrees(90);
     joint_constraint.weight = 1.0;
     constraints.joint_constraints.push_back(joint_constraint);
@@ -83,7 +84,6 @@ public:
     constraints.joint_constraints.push_back(joint_constraint);
 
     move_group_arm_->setPathConstraints(constraints);
-
 
     // 真上から見下ろす撮影姿勢
     // crane_x7_upper_arm_revolute_part_rotate_jointにかかる負荷が高いため長時間の使用に向いておりません
@@ -139,7 +139,7 @@ private:
           if (tf.getOrigin().z() < TARGET_Z_MIN_LIMIT) {
             tf.getOrigin().setZ(TARGET_Z_MIN_LIMIT);
           }
-          picking(tf.getOrigin());
+          stamping(tf.getOrigin());
         }
       } else {
         tf_past_ = tf;
@@ -161,45 +161,52 @@ private:
     move_group_arm_->move();
   }
 
-  void picking(tf2::Vector3 target_position)
+  void stamping(tf2::Vector3 target_position)
   {
     const double GRIPPER_DEFAULT = 0.0;
     const double GRIPPER_OPEN = angles::from_degrees(60.0);
     const double GRIPPER_CLOSE = angles::from_degrees(15.0);
+    const int move_steps = 10;
+    const int press_steps = 5;
 
-    // 何かを掴んでいた時のためにハンドを開閉
-    control_gripper(GRIPPER_OPEN);
+    // 現在位置を取得
+    geometry_msgs::msg::Pose current_pose = move_group_arm_->getCurrentPose().pose;
+
+    // ハンドを閉める
     control_gripper(GRIPPER_DEFAULT);
 
-    // 掴む準備をする
-    control_arm(target_position.x() - 0.2, target_position.y(), target_position.z() + 0.03, 90, 0, 90);
-
-    // ハンドを開く
-    control_gripper(GRIPPER_OPEN);
-
-    // 掴みに行く
-    control_arm(target_position.x(), target_position.y(), target_position.z() + 0.03, 90, 0, 90);
-
-    // ハンドを閉じる
-    control_gripper(GRIPPER_CLOSE);
-
-    // 一度初期姿勢に戻る
+    // ホームポジションへ移動（後から削除する可能性が高い）
     init_pose();
 
-    // 移動する
-    control_arm(0.3, 0.15, 0.2, 90, 0, 90);
+    // 経路を10分割して(target_position.x(), target_position.y(), 0.1)まで移動
+    for (int i = 1; i <=  move_steps; ++i) {
+        geometry_msgs::msg::Pose intermediate_pose;
+        intermediate_pose.position.x = current_pose.position.x + (target_position.x() - current_pose.position.x) * i / move_steps;
+        intermediate_pose.position.y = current_pose.position.y + (target_position.y() - current_pose.position.y) * i / move_steps;
+        intermediate_pose.position.z = current_pose.position.z + (0.1 - current_pose.position.z) * i / move_steps;
+        intermediate_pose.orientation = current_pose.orientation; // 同じ姿勢を維持
 
-    // 下ろす
-    control_arm(0.3, 0.15, 0.1, 90, 0, 90);
+        control_arm(intermediate_pose.position.x(), intermediate_pose.position.y(), .intermediate_pose.positionz(), 90, 0, 90);
+        }
+    }
 
-    // ハンドを開く
-    control_gripper(GRIPPER_OPEN);
+    // ハンコを押す
+    for (int i = 1; i <=  press_steps; ++i) {
+        geometry_msgs::msg::Pose intermediate_pose;
+        intermediate_pose.position.x = current_pose.position.x;
+        intermediate_pose.position.y = current_pose.position.y;
+        intermediate_pose.position.z = current_pose.position.z + (0.05 - current_pose.position.z) * i / press_steps;
+        intermediate_pose.orientation = current_pose.orientation; // 同じ姿勢を維持
+
+        control_arm(intermediate_pose.position.x(), intermediate_pose.position.y(), .intermediate_pose.positionz(), 90, 0, 90);
+        }
+    }
 
     // 初期姿勢に戻る
     init_pose();
 
-    // ハンドを閉じる
-    control_gripper(GRIPPER_DEFAULT);
+    // ループを回避するため動作終了
+    rclcpp::shutdown();
   }
 
   // グリッパ制御
@@ -254,3 +261,4 @@ int main(int argc, char ** argv)
   rclcpp::shutdown();
   return 0;
 }
+

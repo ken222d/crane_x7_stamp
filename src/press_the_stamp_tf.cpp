@@ -25,6 +25,7 @@
 #include <cmath>
 #include <memory>
 #include <vector>
+#include <iostream> // std::cout を使うために必要
 
 #include "angles/angles.h"
 #include "geometry_msgs/msg/pose.hpp"
@@ -83,7 +84,7 @@ public:
     joint_constraint.weight = 0.8;
     constraints.joint_constraints.push_back(joint_constraint);
 
-    move_group_arm_->setPathConstraints(constraints);
+    // move_group_arm_->setPathConstraints(constraints);
 
     // 真上から見下ろす撮影姿勢
     // crane_x7_upper_arm_revolute_part_rotate_jointにかかる負荷が高いため長時間の使用に向いておりません
@@ -166,8 +167,8 @@ private:
     const double GRIPPER_DEFAULT = 0.0;
     const double GRIPPER_OPEN = angles::from_degrees(60.0);
     const double GRIPPER_CLOSE = angles::from_degrees(15.0);
-    const int move_steps = 10;
-    const int press_steps = 5;
+    const int move_steps = 20;
+    const int press_steps = 20;
 
     // 現在位置を取得
     geometry_msgs::msg::Pose current_pose = move_group_arm_->getCurrentPose().pose;
@@ -179,27 +180,29 @@ private:
     init_pose();
 
     // 経路を10分割して(target_position.x(), target_position.y(), 0.1)まで移動
-    for (int i = 1; i <=  move_steps; ++i) {
+    for (int i = 1; i <= move_steps; ++i) {
         geometry_msgs::msg::Pose intermediate_pose;
         intermediate_pose.position.x = current_pose.position.x + (target_position.x() - current_pose.position.x) * i / move_steps;
         intermediate_pose.position.y = current_pose.position.y + (target_position.y() - current_pose.position.y) * i / move_steps;
-        intermediate_pose.position.z = current_pose.position.z + (0.1 - current_pose.position.z) * i / move_steps;
+        intermediate_pose.position.z = current_pose.position.z + (0.2 - current_pose.position.z) * i / move_steps;
         intermediate_pose.orientation = current_pose.orientation; // 同じ姿勢を維持
 
-        control_arm(intermediate_pose.position.x(), intermediate_pose.position.y(), .intermediate_pose.positionz(), 90, 0, 90);
-        }
+        control_arm(intermediate_pose.position.x, intermediate_pose.position.y, intermediate_pose.position.z, 90, 0, 90);
+        // 現在のループカウントを表示
+        std::cout << "Move steps loop iteration: " << i << "/" << move_steps << std::endl;
     }
 
     // ハンコを押す
-    for (int i = 1; i <=  press_steps; ++i) {
+    for (int i = 1; i <= press_steps; ++i) {
         geometry_msgs::msg::Pose intermediate_pose;
         intermediate_pose.position.x = current_pose.position.x;
         intermediate_pose.position.y = current_pose.position.y;
         intermediate_pose.position.z = current_pose.position.z + (0.05 - current_pose.position.z) * i / press_steps;
         intermediate_pose.orientation = current_pose.orientation; // 同じ姿勢を維持
 
-        control_arm(intermediate_pose.position.x(), intermediate_pose.position.y(), .intermediate_pose.positionz(), 90, 0, 90);
-        }
+        control_arm(intermediate_pose.position.x, intermediate_pose.position.y, intermediate_pose.position.z, 90, 0, 90);
+        // 現在のループカウントを表示
+        std::cout << "Press steps loop iteration: " << i << "/" << press_steps << std::endl;
     }
 
     // 初期姿勢に戻る

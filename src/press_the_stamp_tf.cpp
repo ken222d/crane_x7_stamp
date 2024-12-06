@@ -4,12 +4,6 @@
 // このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され、その後Haruto YamamotoとAkira Matsumoyoによって変更されました。
 
 // 設計方針
-//        こんな感じで書きたい
-//            ハンドを開閉する動作を削除
-//            init_poseで始まりinit_poseで終わる
-//            control_armを10回に分けて目標座標（target_position.x(), target_position.y(), 0.1）まで移動
-//            根本から数えて2つめの関節を5°動かしてハンコを押す
-//            rclcpp::shutdown();
 //        構成
 //            void move_specific_joint
 //                特定の関節を現在の角度からn°動かす
@@ -17,7 +11,10 @@
 //                変数の定義
 //                init_pose
 //                xyz座標を移動するfor文
-//                関節を動かす関数(void move_specific_joint)の呼び出し
+//                一時停止
+//                void move_specific_jointで第2関節を-5°動かす
+//                一時停止
+//                void move_specific_jointで第2関節を5°動かす
 //                init_pose
 //                rclcpp::shutdown();
 //
@@ -189,8 +186,7 @@ private:
     const double GRIPPER_DEFAULT = 0.0;
     const double GRIPPER_OPEN = angles::from_degrees(60.0);
     const double GRIPPER_CLOSE = angles::from_degrees(15.0);
-    const int move_steps = 5;
-    const int press_steps = 1;
+    const int move_steps = 10;
 
     // 現在位置を取得
     geometry_msgs::msg::Pose current_pose = move_group_arm_->getCurrentPose().pose;
@@ -201,8 +197,21 @@ private:
     // ホームポジションへ移動（後から削除する可能性が高い）
     init_pose();
 
-    // 関節曲げる実験
-    move_specific_joint(1, -5.0);
+    // 経路を10分割して(target_position.x(), target_position.y(), 0.1)まで移動
+    for (int i = 1; i <= move_steps; ++i) {
+        geometry_msgs::msg::Pose intermediate_pose;
+        intermediate_pose.position.x = current_pose.position.x + (target_position.x() - current_pose.position.x) * i / move_steps;
+        intermediate_pose.position.y = current_pose.position.y + (target_position.y() - current_pose.position.y) * i / move_steps;
+        intermediate_pose.position.z = current_pose.position.z + (0.2 - current_pose.position.z) * i / move_steps;
+        intermediate_pose.orientation = current_pose.orientation; // 同じ姿勢を維持
+
+        control_arm(intermediate_pose.position.x, intermediate_pose.position.y, intermediate_pose.position.z, 90, 0, 90);
+        // 現在のループカウントを表示
+        std::cout << "Move steps loop iteration: " << i << "/" << move_steps << std::endl;
+    }
+
+    // ハンコを押す
+    move_specific_joint(1, -2.5);
 
     // 初期姿勢に戻る
     init_pose();

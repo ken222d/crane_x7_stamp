@@ -210,7 +210,7 @@ private:
         std::cout << "Move steps loop iteration: " << i << "/" << move_steps << std::endl;
     }
 
-    rclcpp::sleep_for(std::chrono:seconds(2)); 
+    rclcpp::sleep_for(std::chrono::seconds(2)); 
 
     // ハンコを押す動作を-0.5°ずつ5回のループで実行
     for (int i = 0; i < 5; ++i) {
@@ -218,13 +218,13 @@ private:
         std::cout << "Step " << (i + 1) << ": Joint moved by -0.5°" << std::endl;
     }
 
-    rclcpp::sleep_for(std::chrono:seconds(3));
+    rclcpp::sleep_for(std::chrono::seconds(3));
 
     // ハンコを離す動作を0.5°ずつ5回のループで実行
     for (int i = 0; i < 5; ++i) {
         move_specific_joint(1, 0.5); // 0.5°ずつ動かす
         std::cout << "Step " << (i + 1) << ": Joint moved by -0.5°" << std::endl;
-
+    }
 
     // 初期姿勢に戻る
     init_pose();

@@ -4,23 +4,23 @@
 // このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され、その後Haruto YamamotoとAkira Matsumoyoによって変更されました。
 
 // 設計方針
-//    関数picking : stamping
 //        こんな感じで書きたい
 //            ハンドを開閉する動作を削除
 //            init_poseで始まりinit_poseで終わる
 //            control_armを10回に分けて目標座標（target_position.x(), target_position.y(), 0.1）まで移動
-//            control_armを5回に分けてハンコを押す（z座標を0.1から0.05まで移動）
+//            根本から数えて2つめの関節を5°動かしてハンコを押す
 //            rclcpp::shutdown();
 //        構成
-//            変数の定義
-//            init_pose
-//            xyz座標を移動するfor文
-//            z座標を移動するfor文
-//            init_pose
-//            rclcpp::shutdown();
+//            void move_specific_joint
+//                特定の関節を現在の角度からn°動かす
+//            void stamping 
+//                変数の定義
+//                init_pose
+//                xyz座標を移動するfor文
+//                関節を動かす関数(void move_specific_joint)の呼び出し
+//                init_pose
+//                rclcpp::shutdown();
 //
-//    関節の角度を制限（90 : 60）
-
 #include <chrono>
 #include <cmath>
 #include <memory>
@@ -152,7 +152,7 @@ private:
   {
     std::vector<double> joint_values;
     joint_values.push_back(angles::from_degrees(0.0));
-    joint_values.push_back(angles::from_degrees(90));
+    joint_values.push_back(angles::from_degrees(85));
     joint_values.push_back(angles::from_degrees(0.0));
     joint_values.push_back(angles::from_degrees(-160));
     joint_values.push_back(angles::from_degrees(0.0));
@@ -162,13 +162,35 @@ private:
     move_group_arm_->move();
   }
 
+  // 特定の関節の角度を動かす関数
+  void move_specific_joint(int joint_index, double relative_angle_deg)
+  {
+    // 現在の関節角度を取得
+    std::vector<double> current_joint_values = move_group_arm_->getCurrentJointValues();
+
+    // 指定した関節の相対角度を計算
+    if (joint_index >= 0 && joint_index < current_joint_values.size())
+    {
+        current_joint_values[joint_index] += angles::from_degrees(relative_angle_deg);
+
+        // 新しい関節値を設定して動かす
+        move_group_arm_->setJointValueTarget(current_joint_values);
+        move_group_arm_->move();
+    }
+    else
+    {
+        std::cerr << "Invalid joint index: " << joint_index << std::endl;
+    }
+  }
+
+
   void stamping(tf2::Vector3 target_position)
   {
     const double GRIPPER_DEFAULT = 0.0;
     const double GRIPPER_OPEN = angles::from_degrees(60.0);
     const double GRIPPER_CLOSE = angles::from_degrees(15.0);
-    const int move_steps = 20;
-    const int press_steps = 20;
+    const int move_steps = 5;
+    const int press_steps = 1;
 
     // 現在位置を取得
     geometry_msgs::msg::Pose current_pose = move_group_arm_->getCurrentPose().pose;
@@ -179,31 +201,8 @@ private:
     // ホームポジションへ移動（後から削除する可能性が高い）
     init_pose();
 
-    // 経路を10分割して(target_position.x(), target_position.y(), 0.1)まで移動
-    for (int i = 1; i <= move_steps; ++i) {
-        geometry_msgs::msg::Pose intermediate_pose;
-        intermediate_pose.position.x = current_pose.position.x + (target_position.x() - current_pose.position.x) * i / move_steps;
-        intermediate_pose.position.y = current_pose.position.y + (target_position.y() - current_pose.position.y) * i / move_steps;
-        intermediate_pose.position.z = current_pose.position.z + (0.2 - current_pose.position.z) * i / move_steps;
-        intermediate_pose.orientation = current_pose.orientation; // 同じ姿勢を維持
-
-        control_arm(intermediate_pose.position.x, intermediate_pose.position.y, intermediate_pose.position.z, 90, 0, 90);
-        // 現在のループカウントを表示
-        std::cout << "Move steps loop iteration: " << i << "/" << move_steps << std::endl;
-    }
-
-    // ハンコを押す
-    for (int i = 1; i <= press_steps; ++i) {
-        geometry_msgs::msg::Pose intermediate_pose;
-        intermediate_pose.position.x = current_pose.position.x;
-        intermediate_pose.position.y = current_pose.position.y;
-        intermediate_pose.position.z = current_pose.position.z + (0.05 - current_pose.position.z) * i / press_steps;
-        intermediate_pose.orientation = current_pose.orientation; // 同じ姿勢を維持
-
-        control_arm(intermediate_pose.position.x, intermediate_pose.position.y, intermediate_pose.position.z, 90, 0, 90);
-        // 現在のループカウントを表示
-        std::cout << "Press steps loop iteration: " << i << "/" << press_steps << std::endl;
-    }
+    // 関節曲げる実験
+    move_specific_joint(1, -5.0);
 
     // 初期姿勢に戻る
     init_pose();

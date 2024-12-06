@@ -194,7 +194,7 @@ private:
     // ハンドを閉める
     control_gripper(GRIPPER_DEFAULT);
 
-    // ホームポジションへ移動（後から削除する可能性が高い）
+    // ホームポジションへ移動（重複している可能性があり, 後から削除する可能性が高い）
     init_pose();
 
     // 経路を10分割して(target_position.x(), target_position.y(), 0.1)まで移動
@@ -210,8 +210,21 @@ private:
         std::cout << "Move steps loop iteration: " << i << "/" << move_steps << std::endl;
     }
 
-    // ハンコを押す
-    move_specific_joint(1, -2.5);
+    rclcpp::sleep_for(std::chrono:seconds(2)); 
+
+    // ハンコを押す動作を-0.5°ずつ5回のループで実行
+    for (int i = 0; i < 5; ++i) {
+        move_specific_joint(1, -0.5); // -0.5°ずつ動かす
+        std::cout << "Step " << (i + 1) << ": Joint moved by -0.5°" << std::endl;
+    }
+
+    rclcpp::sleep_for(std::chrono:seconds(3));
+
+    // ハンコを離す動作を0.5°ずつ5回のループで実行
+    for (int i = 0; i < 5; ++i) {
+        move_specific_joint(1, 0.5); // 0.5°ずつ動かす
+        std::cout << "Step " << (i + 1) << ": Joint moved by -0.5°" << std::endl;
+
 
     // 初期姿勢に戻る
     init_pose();

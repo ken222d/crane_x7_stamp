@@ -186,7 +186,7 @@ private:
     const double GRIPPER_DEFAULT = 0.0;
     const double GRIPPER_OPEN = angles::from_degrees(60.0);
     const double GRIPPER_CLOSE = angles::from_degrees(15.0);
-    const int move_steps = 10;
+    const int move_steps = 3;
 
     // 現在位置を取得
     geometry_msgs::msg::Pose current_pose = move_group_arm_->getCurrentPose().pose;
@@ -202,12 +202,25 @@ private:
         geometry_msgs::msg::Pose intermediate_pose;
         intermediate_pose.position.x = current_pose.position.x + (target_position.x() - current_pose.position.x) * i / move_steps;
         intermediate_pose.position.y = current_pose.position.y + (target_position.y() - current_pose.position.y) * i / move_steps;
-        intermediate_pose.position.z = current_pose.position.z + (0.2 - current_pose.position.z) * i / move_steps;
+        intermediate_pose.position.z = current_pose.position.z + (0.5 - current_pose.position.z) * i / move_steps;
         intermediate_pose.orientation = current_pose.orientation; // 同じ姿勢を維持
 
         control_arm(intermediate_pose.position.x, intermediate_pose.position.y, intermediate_pose.position.z, 90, 0, 90);
         // 現在のループカウントを表示
         std::cout << "Move steps loop iteration: " << i << "/" << move_steps << std::endl;
+    }
+
+    for (int i = 3; i >= 2; i--) {
+      geometry_msgs::msg::Pose intermediate_pose;
+        intermediate_pose.position.x = current_pose.position.x;
+        intermediate_pose.position.y = current_pose.position.y;
+        intermediate_pose.position.z = (0.1 * i);
+        intermediate_pose.orientation = current_pose.orientation; // 同じ姿勢を維持
+
+        control_arm(intermediate_pose.position.x, intermediate_pose.position.y, intermediate_pose.position.z, 90, 0, 90);
+        // 現在のループカウントを表示
+        std::cout << "Move steps loop iteration: " << i << "/" << move_steps << std::endl;
+      
     }
 
     rclcpp::sleep_for(std::chrono::seconds(2)); 

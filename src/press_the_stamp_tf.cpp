@@ -197,7 +197,7 @@ private:
     // ホームポジションへ移動（重複している可能性があり, 後から削除する可能性が高い）
     init_pose();
 
-    // 経路を10分割して(target_position.x(), target_position.y(), 0.1)まで移動
+    // 経路を3分割して(target_position.x(), target_position.y(), 0.5)まで移動
     for (int i = 1; i <= move_steps; ++i) {
         geometry_msgs::msg::Pose intermediate_pose;
         intermediate_pose.position.x = current_pose.position.x + (target_position.x() - current_pose.position.x) * i / move_steps;
@@ -219,7 +219,7 @@ private:
 
         control_arm(intermediate_pose.position.x, intermediate_pose.position.y, intermediate_pose.position.z, 90, 0, 90);
         // 現在のループカウントを表示
-        std::cout << "Move steps loop iteration: " << i << "/" << move_steps << std::endl;
+        std::cout << "Movement Control Loop: " << i << "/" << move_steps << std::endl;
       
     }
 

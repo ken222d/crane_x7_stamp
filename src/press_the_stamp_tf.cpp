@@ -218,7 +218,7 @@ private:
     double θ = 0.0;
     calculate_arm_length = std::sqrt((current_pose.position.x * current_pose.position.x) + (current_pose.position.y * current_pose.position.y));
 
-    θ = (std::asin(current_pose.position.z / calculate_arm_length)　/ 5);
+    θ = (std::asin(current_pose.position.z / calculate_arm_length)/5);
 
     // ハンコを押す動作を-1°ずつ5回のループで実行
     for (int i = 0; i < 5; ++i) {

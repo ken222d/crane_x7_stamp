@@ -210,7 +210,7 @@ private:
         std::cout << "Move steps loop iteration: " << i << "/" << move_steps << std::endl;
     }
 
-    for (int i = 3; i >= 2; i--) {
+    for (int i = 3; i >= 2; --i) {
       geometry_msgs::msg::Pose intermediate_pose;
         intermediate_pose.position.x = current_pose.position.x;
         intermediate_pose.position.y = current_pose.position.y;
@@ -227,15 +227,15 @@ private:
 
     std::cout << "目標の座標に到達しました" << std::endl;
 
-    double calculate_arm_length;
-    double θ = 0.0;
-    calculate_arm_length = std::sqrt((current_pose.position.x * current_pose.position.x) + (current_pose.position.y * current_pose.position.y));
+    double calculated_arm_length;
+    double theta = 0.0;
+    calculated_arm_length = std::sqrt((current_pose.position.x * current_pose.position.x) + (current_pose.position.y * current_pose.position.y));
 
-    θ = (std::asin(current_pose.position.z / calculate_arm_length)/5);
+    theta = angles::to_degrees(std::asin(current_pose.position.z / calculate_arm_length));
 
     // ハンコを押す動作を-1°ずつ5回のループで実行
     for (int i = 0; i < 5; ++i) {
-        move_specific_joint(1, -θ); // -1°ずつ動かす
+        move_specific_joint(1, -theta); // -1°ずつ動かす
         std::cout << "Step " << (i + 1) << ": Joint moved by -1°" << std::endl;
     }
 
@@ -245,7 +245,7 @@ private:
 
     // ハンコを離す動作を0.5°ずつ5回のループで実行
     for (int i = 0; i < 5; ++i) {
-        move_specific_joint(1, θ); // 0.5°ずつ動かす
+        move_specific_joint(1, theta); // 0.5°ずつ動かす
         std::cout << "Step " << (i + 1) << ": Joint moved by 1°" << std::endl;
     }
 

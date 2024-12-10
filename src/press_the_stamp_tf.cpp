@@ -187,7 +187,15 @@ private:
     const double GRIPPER_OPEN = angles::from_degrees(60.0);
     const double GRIPPER_CLOSE = angles::from_degrees(15.0);
     const int move_steps = 20;
-    const double before_press_z = 0.05;
+    const double before_press_z = 0.1;
+
+    double calculated_arm_length = 0.0;
+    double theta = 0.0;
+    double adjust_before_press_z = 0.0;
+
+    calculated_arm_length = std::sqrt((target_position.x() * target_position.x()) + (target_position.y() * target_position.y()));
+    adjust_before_press_z = before_press_z + 0.1 * calculated_arm_length;
+    theta = angles::to_degrees(std::asin(before_press_z / calculated_arm_length));
 
     // 現在位置を取得
     geometry_msgs::msg::Pose current_pose = move_group_arm_->getCurrentPose().pose;
@@ -214,13 +222,6 @@ private:
     rclcpp::sleep_for(std::chrono::seconds(2)); 
 
     std::cout << "目標の座標に到達しました" << std::endl;
-
-    double calculated_arm_length;
-    double theta = 0.0;
-    calculated_arm_length = std::sqrt((target_position.x() * target_position.x()) + (target_position.y() * target_position.y()));
-
-    std::cout << "現在のZ座標" << current_pose.position.z  << std::endl;
-    theta = angles::to_degrees(std::asin(before_press_z / calculated_arm_length));
 
     // ハンコを押す動作を-1°ずつ5回のループで実行
     for (int i = 0; i < 5; ++i) {

@@ -36,8 +36,8 @@ void send_fixed_transform()
     t.child_frame_id = "target_0";  
 
     // 固定座標を設定
-    t.transform.translation.x = 0.5;
-    t.transform.translation.y = 0.0;
+    t.transform.translation.x = 0.0;
+    t.transform.translation.y = 0.5;
     t.transform.translation.z = 0.1;
 
     // ここ後で消してもいいかも

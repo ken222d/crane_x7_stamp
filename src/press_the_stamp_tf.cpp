@@ -186,7 +186,8 @@ private:
     const double GRIPPER_DEFAULT = 0.0;
     const double GRIPPER_OPEN = angles::from_degrees(60.0);
     const double GRIPPER_CLOSE = angles::from_degrees(15.0);
-    const int move_steps = 3;
+    const int move_steps = 20;
+    const double before_press_z = 0.05;
 
     // 現在位置を取得
     geometry_msgs::msg::Pose current_pose = move_group_arm_->getCurrentPose().pose;
@@ -197,30 +198,17 @@ private:
     // ホームポジションへ移動（重複している可能性があり, 後から削除する可能性が高い）
     init_pose();
 
-    // 経路を3分割して(target_position.x(), target_position.y(), 0.5)まで移動
+    // 経路を20分割して(target_position.x(), target_position.y(), 0.5)まで移動
     for (int i = 1; i <= move_steps; ++i) {
         geometry_msgs::msg::Pose intermediate_pose;
         intermediate_pose.position.x = current_pose.position.x + (target_position.x() - current_pose.position.x) * i / move_steps;
         intermediate_pose.position.y = current_pose.position.y + (target_position.y() - current_pose.position.y) * i / move_steps;
-        intermediate_pose.position.z = current_pose.position.z + (0.5 - current_pose.position.z) * i / move_steps;
+        intermediate_pose.position.z = current_pose.position.z + (before_press_z - current_pose.position.z) * i / move_steps;
         intermediate_pose.orientation = current_pose.orientation; // 同じ姿勢を維持
 
         control_arm(intermediate_pose.position.x, intermediate_pose.position.y, intermediate_pose.position.z, 90, 0, 90);
         // 現在のループカウントを表示
         std::cout << "Move steps loop iteration: " << i << "/" << move_steps << std::endl;
-    }
-
-    for (int i = 3; i >= 2; --i) {
-      geometry_msgs::msg::Pose intermediate_pose;
-        intermediate_pose.position.x = current_pose.position.x;
-        intermediate_pose.position.y = current_pose.position.y;
-        intermediate_pose.position.z = (0.1 * i);
-        intermediate_pose.orientation = current_pose.orientation; // 同じ姿勢を維持
-
-        control_arm(intermediate_pose.position.x, intermediate_pose.position.y, intermediate_pose.position.z, 90, 0, 90);
-        // 現在のループカウントを表示
-        std::cout << "Movement Control Loop: " << i << "/" << move_steps << std::endl;
-      
     }
 
     rclcpp::sleep_for(std::chrono::seconds(2)); 
@@ -229,14 +217,15 @@ private:
 
     double calculated_arm_length;
     double theta = 0.0;
-    calculated_arm_length = std::sqrt((current_pose.position.x * current_pose.position.x) + (current_pose.position.y * current_pose.position.y));
+    calculated_arm_length = std::sqrt((target_position.x() * target_position.x()) + (target_position.y() * target_position.y()));
 
-    theta = angles::to_degrees(std::asin(current_pose.position.z / calculate_arm_length));
+    std::cout << "現在のZ座標" << current_pose.position.z  << std::endl;
+    theta = angles::to_degrees(std::asin(before_press_z / calculated_arm_length));
 
     // ハンコを押す動作を-1°ずつ5回のループで実行
     for (int i = 0; i < 5; ++i) {
-        move_specific_joint(1, -theta); // -1°ずつ動かす
-        std::cout << "Step " << (i + 1) << ": Joint moved by -1°" << std::endl;
+        move_specific_joint(1, -theta / 5); // -1°ずつ動かす
+        std::cout << "Step " << (i + 1) << ": Joint moved by" << -theta / 5 << "°" << std::endl;
     }
 
     rclcpp::sleep_for(std::chrono::seconds(5));
@@ -245,8 +234,8 @@ private:
 
     // ハンコを離す動作を0.5°ずつ5回のループで実行
     for (int i = 0; i < 5; ++i) {
-        move_specific_joint(1, theta); // 0.5°ずつ動かす
-        std::cout << "Step " << (i + 1) << ": Joint moved by 1°" << std::endl;
+        move_specific_joint(1, theta / 5); // 0.5°ずつ動かす
+        std::cout << "Step " << (i + 1) << ": Joint moved by" << theta / 5 << "°" << std::endl;
     }
 
     // 初期姿勢に戻る

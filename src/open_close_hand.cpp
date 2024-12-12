@@ -71,10 +71,10 @@ int main(int argc, char ** argv)
   move_group_gripper.move();
 //  return 0;
 
-  rclcpp::sleep_for(std::chrono::seconds(5));
+  rclcpp::sleep_for(std::chrono::seconds(10));
 
 //グリッパーを閉じる
-  gripper_joint_values[0] = angles::from_degrees(0);
+  gripper_joint_values[0] = angles::from_degrees(15);
   move_group_gripper.setJointValueTarget(gripper_joint_values);
   move_group_gripper.move();
 //  return 0;

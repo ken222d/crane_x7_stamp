@@ -23,44 +23,6 @@ find_package(OpenCV REQUIRED COMPONENTS core)
 find_package(rclcpp REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 
-# ここから
-add_executable(color_detection
-  src/color_detection.cpp
-)
-ament_target_dependencies(color_detection
-    cv_bridge
-    geometry_msgs
-    image_geometry
-    moveit_ros_planning_interface
-    OpenCV
-    rclcpp
-    tf2_geometry_msgs
-)
-# ここまででコードに必要なものを記述
-add_executable(pick_and_move
-  src/pick_and_move.cpp
-)
-ament_target_dependencies(pick_and_move
-    cv_bridge
-    geometry_msgs
-    image_geometry
-    moveit_ros_planning_interface
-    OpenCV
-    rclcpp
-    tf2_geometry_msgs
-)
-add_executable(pick_and_move_tf
-  src/pick_and_move_tf.cpp
-)
-ament_target_dependencies(pick_and_move_tf
-    cv_bridge
-    geometry_msgs
-    image_geometry
-    moveit_ros_planning_interface
-    OpenCV
-    rclcpp
-    tf2_geometry_msgs
-)
 add_executable(fixed_position_publisher
   src/fixed_position_publisher.cpp
 )
@@ -94,21 +56,8 @@ ament_target_dependencies(press_the_stamp_tf
     tf2_geometry_msgs
 )
 
-
 # src下のソースコードはTARGETSで
 # launch下のlaunchファイルはDIRECTORYで
-install(TARGETS
-  color_detection
-  DESTINATION lib/${PROJECT_NAME}/
-)
-install(TARGETS
-  pick_and_move 
-  DESTINATION lib/${PROJECT_NAME}/
-)
-install(TARGETS
-  pick_and_move_tf
-  DESTINATION lib/${PROJECT_NAME}/
-)
 install(TARGETS
   fixed_position_publisher
   DESTINATION lib/${PROJECT_NAME}/

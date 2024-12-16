@@ -193,7 +193,7 @@ void stamping(tf2::Vector3 target_position)
 
 
     // ハンドを閉める
-    control_gripper(GRIPPER_DEFAULT);
+    control_gripper(0);
 
 
 	// ホームポジションへ移動（重複している可能性があり, 後から削除する可能性が高い）
@@ -201,6 +201,58 @@ void stamping(tf2::Vector3 target_position)
 
     // 現在位置を取得
     geometry_msgs::msg::Pose current_pose = move_group_arm_->getCurrentPose().pose;
+
+
+
+
+control_gripper(60);
+    geometry_msgs::msg::Pose stamp;
+  tf2::Quaternion q;
+
+ stamp.position.x = 0.25;
+ stamp.position.y = -0.15;
+ stamp.position.z = 0.1;
+ //q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(90));
+ // target_pose.orientation = tf2::toMsg(q);
+ //move_group_arm_.setPoseTarget(target_pose);
+ //move_group_arm_.move();
+ //move_group_gripper_->setJointValueTarget(joint_values);
+ move_group_gripper_->move();
+control_arm(stamp.position.x, stamp.position.y, stamp.position.z, 90, 0, 90);
+
+ stamp.position.x = 0.3;
+ stamp.position.y = -0.15;
+ stamp.position.z = 0.1;
+ // q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(90));
+ // target_pose.orientation = tf2::toMsg(q);
+ //move_group_arm_.setPoseTarget(target_pose);
+ //move_group_arm_.move();
+// move_group_gripper_->setJointValueTarget(joint_values);
+ move_group_gripper_->move();
+control_arm(stamp.position.x, stamp.position.y, stamp.position.z, 90, 0, 90);
+  //掴む
+ // gripper_joint_values[0] = angles::from_degrees(15);
+ //move_group_gripper_.setJointValueTarget(gripper_joint_values);
+ //move_group_gripper_.move();
+// move_group_gripper_->setJointValueTarget(joint_values);
+ move_group_gripper_->move();
+ control_gripper(0);
+  // 持ち上げる
+ stamp.position.x = 0.3;
+ stamp.position.y = 0.0;
+ stamp.position.z = 0.3;
+ // q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(90));
+ // target_pose.orientation = tf2::toMsg(q);
+ //move_group_arm_.setPoseTarget(target_pose);
+ //move_group_arm_.move();
+// move_group_gripper_->setJointValueTarget(joint_values);
+ move_group_gripper_->move();
+control_arm(stamp.position.x, stamp.position.y, stamp.position.z, 90, 0, 90);
+init_pose();
+
+    // 現在位置を取得
+   // geometry_msgs::msg::Pose current_pose = move_group_arm_->getCurrentPose().pose;
+
 
 
 	

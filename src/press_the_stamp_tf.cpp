@@ -119,7 +119,7 @@ private:
       angles::from_degrees(0.0),
       angles::from_degrees(85),
       angles::from_degrees(0.0),
-      angles::from_degrees(-158),
+      angles::from_degrees(-154),
       angles::from_degrees(0.0),
       angles::from_degrees(-50),
       angles::from_degrees(90)
@@ -128,24 +128,35 @@ private:
     move_group_arm_->move();  // アームを移動
   }
 
-  // 特定の関節を指定して動かす
-  void move_specific_joint_step(int joint_index, double relative_angle_deg, int num_steps = 10)
-  {
-    std::vector<double> current_joint_values = move_group_arm_->getCurrentJointValues();
-    if (joint_index >= 0 && joint_index < current_joint_values.size()) {
-      double current_angle_deg = angles::to_degrees(current_joint_values[joint_index]);
-      double angle_difference = relative_angle_deg;
+// 特定の関節を指定して動かす
+void move_specific_joint_step(int joint_index, double relative_angle_deg)
+{
+  // 現在の関節値を取得
+  std::vector<double> current_joint_values = move_group_arm_->getCurrentJointValues();
 
-      for (int i = 1; i <= num_steps; ++i) {
-        current_joint_values[joint_index] = angles::from_degrees(current_angle_deg + (angle_difference * i / num_steps));
-        move_group_arm_->setJointValueTarget(current_joint_values);  // ジョイント目標を設定
-        move_group_arm_->move();  // アームを移動
-        rclcpp::sleep_for(std::chrono::milliseconds(100));  // 100msごとに動かす
-      }
-    } else {
-      std::cerr << "Invalid joint index: " << joint_index << std::endl;  // 無効な関節インデックス
-    }
+  // 有効な関節インデックスかを確認
+  if (joint_index >= 0 && joint_index < current_joint_values.size()) {
+    
+    // 現在の角度を度単位で取得
+    double current_angle_deg = angles::to_degrees(current_joint_values[joint_index]);
+
+    // 角度の差分を計算
+    double angle_difference = relative_angle_deg;
+
+    // 新しい関節角度を計算
+    current_joint_values[joint_index] = angles::from_degrees(current_angle_deg + angle_difference);
+
+    // 設定したジョイント値をターゲットとして指定
+    move_group_arm_->setJointValueTarget(current_joint_values);
+
+    // 移動を実行
+    move_group_arm_->move();
   }
+  else {
+    // 無効な関節インデックスの場合
+    std::cerr << "Invalid joint index: " << joint_index << std::endl;
+  }
+}
 
   // スタンピング動作
   void stamping(tf2::Vector3 target_position)
@@ -172,7 +183,7 @@ private:
       std::cout << "Move steps loop iteration: " << i << "/" << move_steps << std::endl;  // ステップの表示
     }
 
-    // 目標位置に向かって最終的な調整
+// 目標位置に向かって最終的な調整
     current_pose.position.x = target_position.x();
     current_pose.position.y = target_position.y();
 
@@ -192,13 +203,14 @@ private:
 
     double theta = angles::to_degrees(std::asin(before_press_z / calculated_arm_length));  // プレス角度を計算
 
-    // ジョイントを動かして微調整
+ /*   // ジョイントを動かして微調整
     for (int i = 0; i < 5; ++i) {
       move_specific_joint_step(1, -theta / 5);  // ジョイントの角度調整
       std::cout << "Step " << (i + 1) << ": Joint moved by" << theta / 5 << "°" << std::endl;
-    }
+    } 
 
     control_arm(0.3, 0, 0.3, 90, 0, 90);  // アームの最終位置に移動
+*/
     init_pose();  // ホームポジションに戻る
     rclcpp::shutdown();  // ノード終了
   }

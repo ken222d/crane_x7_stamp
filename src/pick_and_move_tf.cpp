@@ -68,6 +68,7 @@ public:
       500ms, std::bind(&PickAndPlaceTf::on_timer, this));
   }
 private:
+  // on_timer : tf位置を取得し, 条件が合えばpickingを行う
   void on_timer()
   {
     // target_0のtf位置姿勢を取得
@@ -109,6 +110,7 @@ private:
       }
     }
   }
+  // init_pose : ロボットを初期姿勢に移動
   void init_pose()
   {
     std::vector<double> joint_values;
@@ -122,6 +124,7 @@ private:
     move_group_arm_->setJointValueTarget(joint_values);
     move_group_arm_->move();
   }
+  // picking : アームの移動
   void picking(tf2::Vector3 target_position)
   {
     const double GRIPPER_DEFAULT = 0.0;

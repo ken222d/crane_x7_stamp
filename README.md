@@ -19,14 +19,38 @@ cd crane_x7_stamp
 
 ### 実行
 
-for real machine
+#### press_the_stamp
+ノード内で指定した座標にハンコを押します.
+- for real machine
+```
+ros2 run crane_x7_stamp press_the_stamp
+```
+- for Gazebo
+```
+ros2 run crane_x7_stamp press_the_stamp use_sim_time:='true'
+```
+
+#### press_the_stamp_tf
+トピックから流れてきた座標の情報をもとにハンコを押します
+- for real machine
 ```
 ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py
 ```
 
-for gazebo
+- for Gazebo
 ```
 ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py use_sim_time:='true'
+```
+
+#### open_close_hand
+ハンコを掴ませるためにハンドを5秒間開きます.
+- for real machine
+```
+ros2 run crane_x7_stamp open_close_hand
+```
+- for Gazebo
+```
+ros2 run crane_x7_stamp open_close_hand use_sim_time:='true'
 ```
 
 ## 注意

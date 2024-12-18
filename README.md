@@ -40,5 +40,6 @@ ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py use_sim_time:='true'
 - YOLOでハンコを検出し掴む
 
 ## ライセンス
-このパッケージはApache License 2.0のもとに, [crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples)の一部を改変して利用しています.
-このパッケージはApache License 2.0に基づき公開されています.
+このパッケージはApache License 2.0のもとに, [crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples)の一部を改変して利用しています.  
+このパッケージはApache License 2.0に基づき公開されています.  
+ライセンスの全文は[LICENSE](https://github.com/ken222d/crane_x7_stamp/blob/main/LICENSE)から確認できます.

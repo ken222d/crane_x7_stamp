@@ -17,4 +17,4 @@ git clone https://github.com/ken222d/crane_x7_stamp.git
 cd crane_x7_stamp
 ```
 
-このリポジトリはApache License 2.0のもとに, [crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples) の一部を改変して利用しています.
+このリポジトリはApache License 2.0のもとに, [crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples)の一部を改変して利用しています.

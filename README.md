@@ -31,7 +31,7 @@ ros2 run crane_x7_stamp press_the_stamp use_sim_time:='true'
 ```
 
 ### press_the_stamp_tf
-トピックから流れてきた座標の情報をもとにハンコを押します
+トピックから流れてきた座標の情報をもとにハンコを押します.
 - for real machine
 ```
 ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py
@@ -56,6 +56,7 @@ ros2 run crane_x7_stamp open_close_hand use_sim_time:='true'
 # 注意
 - 動作が大きくなることがあるので, 使用時は周囲に十分注意してください.
 - マニピュレータ動作終了後, ```Ctrl+C```でプログラムを終了してください.
+- 新たな実行ファイルを追加する場合, [CMakeLists.txt](https://github.com/ken222d/crane_x7_stamp/blob/main/CMakeLists.txt)を編集してください.
 
 # やり残したこと
 - RealSenseを用いて色検出を行いハンコを押す

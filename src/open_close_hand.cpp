@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2023 Keitaro Nakamura,Ryotaro karikomi
-// SPDX-FileCopyrightText: 2024 Haruto Yamamoto
+// SPDX-FileCopyrightText: 2024 Akira Matsumoto
 // SPDX-License-Identifier: Apache 2.0
-// このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され、その後Haruto Yamamotoによって変更されました。
-// 変更内容：グリッパーの開閉をコメントアウト, その他移動を大幅削除, Z座標のみを上下させる動作を追加
+// このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され、その後Akira Matsumotoによって変更されました。
+// 変更内容：グリッパーの開閉を以外の動作を大幅削除
 #include <cmath>
 #include <chrono>
 
@@ -69,15 +69,13 @@ int main(int argc, char ** argv)
   gripper_joint_values[0] = angles::from_degrees(60);
   move_group_gripper.setJointValueTarget(gripper_joint_values);
   move_group_gripper.move();
-//  return 0;
 
-  rclcpp::sleep_for(std::chrono::seconds(10));
+  rclcpp::sleep_for(std::chrono::seconds(5));
 
 //グリッパーを閉じる
   gripper_joint_values[0] = angles::from_degrees(15);
   move_group_gripper.setJointValueTarget(gripper_joint_values);
   move_group_gripper.move();
-//  return 0;
 
   // 可動範囲の制限を解除
   move_group_arm.clearPathConstraints();

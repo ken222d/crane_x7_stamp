@@ -78,13 +78,13 @@ int main(int argc, char ** argv)
   // return 0;
 
   // ハンコを押す動作
-  float arm_updown[6] = {0.25, 0.17, 0.12, 0.05, 0.14, 0.25};
+  float arm_updown[6] = {0.25, 0.17, 0.12, 0.05, 0.14, 0.25}; // {}内でZ座標を随時変更, 現在6段階
   for (int i = 0; i <= 5; i += 1) {
     geometry_msgs::msg::Pose target_pose;
     tf2::Quaternion q;
     
-    target_pose.position.x = 0.5;
-    target_pose.position.y = 0.0;
+    target_pose.position.x = 0.5; // ここでハンコを押すX座標を変更
+    target_pose.position.y = 0.0; // ここでハンコを押すY座標を変更
     target_pose.position.z = arm_updown[i];
     q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(90));
     target_pose.orientation = tf2::toMsg(q);

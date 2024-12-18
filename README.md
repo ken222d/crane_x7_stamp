@@ -31,7 +31,7 @@ ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py use_sim_time:='true'
 
 ## 注意
 - 動作が大きくなることがあるので, 使用時は周囲に十分注意してください.
-- マニピュレータ動作終了後, <ctrl>+<C>でプログラムを終了してください.
+- マニピュレータ動作終了後, ```Ctrl+C```でプログラムを終了してください.
 
 ## やり残したこと
 - RealSenseを用いて色検出を行いハンコを押す
@@ -40,4 +40,5 @@ ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py use_sim_time:='true'
 - YOLOでハンコを検出し掴む
 
 ## ライセンス
-このリポジトリはApache License 2.0のもとに, [crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples)の一部を改変して利用しています.
+このパッケージはApache License 2.0のもとに, [crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples)の一部を改変して利用しています.
+このパッケージはApache License 2.0に基づき公開されています.

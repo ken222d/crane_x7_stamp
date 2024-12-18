@@ -1,5 +1,5 @@
 # このファイルはKeitaro NakamuraとRyotaro Karikomiによって作成され, その後Akira Matsumotoによって変更されました.
-# 変更内容：fixed_position_publisherの追加
+# 変更内容：fixed_position_publisherとopen_close_handの追加
 cmake_minimum_required(VERSION 3.5)
 project(crane_x7_stamp)
 

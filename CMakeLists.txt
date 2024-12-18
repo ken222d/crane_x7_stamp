@@ -43,6 +43,20 @@ ament_target_dependencies(press_the_stamp
     rclcpp
     tf2_geometry_msgs
 )
+
+add_executable(open_close_hand
+  src/open_close_hand.cpp
+)
+ament_target_dependencies(open_close_hand
+    cv_bridge
+    geometry_msgs
+    image_geometry
+    moveit_ros_planning_interface
+    OpenCV
+    rclcpp
+    tf2_geometry_msgs
+)
+
 add_executable(press_the_stamp_tf
   src/press_the_stamp_tf.cpp
 )
@@ -65,7 +79,13 @@ install(TARGETS
 install(TARGETS
   press_the_stamp
   DESTINATION lib/${PROJECT_NAME}/
+) 
+
+install(TARGETS
+  open_close_hand
+  DESTINATION lib/${PROJECT_NAME}/
 )
+
 install(TARGETS
   press_the_stamp_tf
   DESTINATION lib/${PROJECT_NAME}/

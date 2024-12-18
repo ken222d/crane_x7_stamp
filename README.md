@@ -18,3 +18,4 @@ cd crane_x7_stamp
 ```
 
 このリポジトリはApache License 2.0のもとに, [crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples)の一部を改変して利用しています.
+>>>>>>> origin/main

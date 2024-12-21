@@ -58,12 +58,6 @@ ros2 run crane_x7_stamp open_close_hand use_sim_time:='true'
 - マニピュレータ動作終了後, ```Ctrl+C```でプログラムを終了してください.
 - 新たな実行ファイルを追加する場合, [CMakeLists.txt](https://github.com/ken222d/crane_x7_stamp/blob/main/CMakeLists.txt)を編集してください.
 
-# やり残したこと
-- RealSenseを用いて色検出を行いハンコを押す
-- キーボードで入力した座標にハンコを押す
-- 無駄な移動経路の削減
-- YOLOでハンコを検出し掴む
-
 # ライセンス
 このパッケージはApache License 2.0のもとに, [crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples)の一部を改変して利用しています.  
 このパッケージはApache License 2.0に基づき公開されています.  

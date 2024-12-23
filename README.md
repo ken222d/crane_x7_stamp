@@ -23,7 +23,7 @@ ROS 2及びCRANE-X7のセットアップ, ビルドの方法に関しては[http
 1. open_close_handでハンドを開き, ハンコを掴ませる.  
 2. press_the_stampもしくはpress_the_stamp_tfでハンコを押す.
 
-### camera_picking
+### camera_picking(うまくいかない)
 物体の色を認識して, その位置にハンコを押します. 
 - 実機用
 ```

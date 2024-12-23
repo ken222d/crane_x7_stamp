@@ -23,11 +23,11 @@ cd crane_x7_stamp
 ノード内で指定した座標にハンコを押します.
 - for real machine
 ```
-ros2 run crane_x7_stamp press_the_stamp
+ros2 launch crane_x7_stamp press_the_stamp.launch.py
 ```
 - for Gazebo
 ```
-ros2 run crane_x7_stamp press_the_stamp use_sim_time:='true'
+ros2 launch crane_x7_stamp press_the_stamp.launch.py use_sim_time:='true'
 ```
 
 ### press_the_stamp_tf
@@ -46,11 +46,11 @@ ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py use_sim_time:='true'
 ハンコを掴ませるためにハンドを5秒間開きます.
 - for real machine
 ```
-ros2 run crane_x7_stamp open_close_hand
+ros2 launch crane_x7_stamp open_close_hand.launch.py
 ```
 - for Gazebo
 ```
-ros2 run crane_x7_stamp open_close_hand use_sim_time:='true'
+ros2 launch crane_x7_stamp open_close_hand.launch.py use_sim_time:='true'
 ```
 
 # 注意
@@ -67,10 +67,10 @@ ros2 run crane_x7_stamp open_close_hand use_sim_time:='true'
   - 他のノード(プログラム)内で指定した座標にハンコを押します.
   - カメラで検出した座標にハンコを押したい場合などはこちらを利用してください.
 ## やり残したこと
-- RealSenseを用いて色検出を行いハンコを押す
-- キーボードで入力した座標にハンコを押す
-- 無駄な移動経路の削減
-- YOLOでハンコを検出し掴む
+- RealSenseを用いて色検出を行いハンコを押す.
+- キーボードで入力した座標にハンコを押す.
+- 無駄な移動経路の削減.
+- YOLOでハンコを検出し掴む.
 
 # ライセンス
 このパッケージはApache License 2.0のもとに, [crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples)の一部を改変して利用しています.  

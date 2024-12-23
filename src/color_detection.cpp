@@ -58,7 +58,10 @@ private:
     // カメラのパラメータを取得してから処理を行う
     if (camera_info_ && depth_image_) {
       // 青い物体を検出するようにHSVの範囲を設定
+
       // 周囲の明るさ等の動作環境に合わせて調整
+
+//以下を変更//
       const int LOW_H = 90, HIGH_H = 135;    //色の範囲を少しゆるくした
       const int LOW_S = 100, HIGH_S = 255;
       const int LOW_V = 30, HIGH_V = 255;
@@ -73,7 +76,8 @@ private:
   　　//　const int LOW_H = 68, HIGH_H = 90;
       //  const int LOW_S = 100, HIGH_S = 255;
       //  const int LOW_V = 30, HIGH_V = 255;
-      // ウェブカメラの画像を受け取る
+      
+　　　// ウェブカメラの画像を受け取る
       auto cv_img = cv_bridge::toCvShare(msg, msg->encoding);
 
       // 画像をRGBからHSVに変換

@@ -69,7 +69,7 @@ ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py use_sim_time:='true'
 - fixed_position_publisher.cpp
   - 座標を送信します.
   - press_the_stamp_tf.cppに座標を送信するために使用しています.
-- open_close_hand
+- open_close_hand.cpp
   - ハンドを5秒間開き, その後閉じます.
 - press_the_stamp.cpp
   - このノード(プログラム)内で指定した座標にハンコを押します.

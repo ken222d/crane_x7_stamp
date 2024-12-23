@@ -1,8 +1,10 @@
 # crane_x7_stamp
-ロボット設計製作論3 P班
+ロボット設計製作論3 P班 Ishizeki
 
 # 動作
-指定された座標にハンコを押す. 
+- 指定された座標にハンコを押す. 
+- RealSenseを使って色検出し, 取得した座標にハンコを押す. 
+- 指定した座標に置かれたハンコを掴みに行き, その後, 指定した座標にハンコを押す. 
 
 # セットアップ, ビルド
 
@@ -29,7 +31,17 @@ ros2 launch crane_x7_stamp press_the_stamp.launch.py
 ```
 ros2 launch crane_x7_stamp press_the_stamp.launch.py use_sim_time:='true'
 ```
+### camera_picking(うまく動かない)
+RealSenseで色を検出し、その場所にハンコを押します. 
+- for real machine
+```
+ros2 launch crane_x7_stamp camera_picking.launch.py
+```
 
+- for Gazebo
+```
+ros2 launch crane_x7_stamp camera_picking.launch.py use_sim_time:='true'
+```
 ### press_the_stamp_tf
 トピックから流れてきた座標の情報をもとにハンコを押します.
 - for real machine
@@ -56,6 +68,7 @@ ros2 launch crane_x7_stamp open_close_hand.launch.py use_sim_time:='true'
 # 注意
 - 動作が大きくなることがあるので, 使用時は周囲に十分注意してください.
 - マニピュレータ動作終了後, ```Ctrl+C```でプログラムを終了してください.
+- 色をうまく認識できないので, 色検出関連のファイルを改善する必要がある. 
 
 # 引き継ぎ
 ## このパッケージに変更を加えたい場合
@@ -63,9 +76,12 @@ ros2 launch crane_x7_stamp open_close_hand.launch.py use_sim_time:='true'
 ## srcファイルの説明
 - press_the_stamp.cpp
   - このノード(プログラム)内で指定した座標にハンコを押します.
-- press_the_stamp.cpp
-  - 他のノード(プログラム)内で指定した座標にハンコを押します.
-  - カメラで検出した座標にハンコを押したい場合などはこちらを利用してください.
+- press_the_stamp_tf.cpp
+  - 指定した座標においたハンコを掴み, 指定した座標にハンコを押します. 
+- color_detection.cpp
+  - 色を認識するノード. 青色と赤色, 緑色のHSV比が書いてあります. 
+- pick_and_move_tf.cpp
+  - カメラで取得した座標にハンコを押す動作をします. 
 ## やり残したこと
 - RealSenseを用いて色検出を行いハンコを押す.
 - キーボードで入力した座標にハンコを押す.

@@ -21,8 +21,8 @@ ROS 2及びCRANE-X7のセットアップ, ビルドの方法に関しては[こ�
 ## 実行
 
 ### 推奨実行手順
-1.open_close_handでハンドを開き, ハンコを掴ませる.  
-2.press_the_stampもしくはpress_the_stamp_tfでハンコを押す.
+1. open_close_handでハンドを開き, ハンコを掴ませる.  
+2. press_the_stampもしくはpress_the_stamp_tfでハンコを押す.
 
 ### open_close_hand
 ハンコを掴ませるためにハンドを5秒間開きます.

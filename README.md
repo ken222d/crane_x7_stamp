@@ -98,6 +98,10 @@ ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py use_sim_time:='true'
 - 無駄な移動経路の削減.
 - YOLOでハンコを検出し掴む.
 
+## mainブランチとの違い
+ - press_the_stamp_tf.cppの動きにハンコを掴みに行く動作がある点. 
+ - 色検出して, ハンコを押す動作をするプログラムがある点. 
+
 # ライセンス
 - このパッケージはApache License 2.0のもとに, [crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples)の一部を改変して利用しています.
   - 以下のファイルを改変し, 新規ファイルを作成しました.

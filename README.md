@@ -20,6 +20,21 @@ ROS 2及びCRANE-X7のセットアップ, ビルドの方法に関しては[こ�
 
 ## 実行
 
+### 推奨実行手順
+1.open_close_handでハンドを開き, ハンコを掴ませる.  
+2.press_the_stampもしくはpress_the_stamp_tfでハンコを押す.
+
+### open_close_hand
+ハンコを掴ませるためにハンドを5秒間開きます.
+- 実機用
+```
+ros2 run crane_x7_stamp open_close_hand
+```
+- Gazebo用
+```
+ros2 run crane_x7_stamp open_close_hand use_sim_time:='true'
+```
+
 ### press_the_stamp
 ノード内で指定した座標にハンコを押します.
 - 実機用
@@ -32,7 +47,7 @@ ros2 run crane_x7_stamp press_the_stamp use_sim_time:='true'
 ```
 
 ### press_the_stamp_tf
-トピックから流れてきた座標の情報をもとにハンコを押します.
+他のノード(fixed_position_publisher)から流れてきた座標の情報をもとにハンコを押します.
 - 実機用
 ```
 ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py
@@ -41,17 +56,6 @@ ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py
 - Gazebo用
 ```
 ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py use_sim_time:='true'
-```
-
-### open_close_hand
-ハンコを掴ませるためにハンドを5秒間開きます.
-- 実機用
-```
-ros2 run crane_x7_stamp open_close_hand
-```
-- Gazebo用
-```
-ros2 run crane_x7_stamp open_close_hand use_sim_time:='true'
 ```
 
 # 注意

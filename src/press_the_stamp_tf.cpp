@@ -1,23 +1,8 @@
 // Copyright 2024 Keitaro Nakamura
 // SPDX-FileCopyrightText: 2024 Haruto Yamamoto, Akira Matsumoto
 // SPDX-License-Identifier: Apache 2.0
-// このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され、その後Haruto YamamotoとAkira Matsumoyoによって変更されました。
-
-// 設計方針
-//        構成
-//            void move_specific_joint
-//                特定の関節を現在の角度からn°動かす
-//            void stamping 
-//                変数の定義
-//                init_pose
-//                xyz座標を移動するfor文
-//                一時停止
-//                void move_specific_jointで第2関節を-5°動かす
-//                一時停止
-//                void move_specific_jointで第2関節を5°動かす
-//                init_pose
-//                rclcpp::shutdown();
-//
+// このファイルは元々Keitaro NakamuraとRyotaro Karikomiによって作成され, その後Haruto YamamotoとAkira Matsumoyoによって変更されました.
+// 変更内容　ホームポジションの角度を調整, ピッキング動作をスタンピング動作に改変.
 #include <chrono>
 #include <cmath>
 #include <memory>

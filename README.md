@@ -58,7 +58,7 @@ ros2 launch crane_x7_stamp press_the_stamp.launch.py use_sim_time:='true'
 
 ### press_the_stamp_tf
 [![YouTubeの動画](https://img.youtube.com/vi/GrYh_InDjL0/0.jpg)](https://youtu.be/GrYh_InDjL0)  
-上の動画は, ハンコを掴む動作はしない. 
+上の動画は, ハンコを掴む動作はしない. \n
 指定した位置にあるハンコを掴みに行き, その後, 他のノード(fixed_position_publisher)から流れてきた座標の情報をもとにハンコを押します.
 - 実機用
 ```

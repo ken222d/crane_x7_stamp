@@ -202,8 +202,7 @@ void stamping(tf2::Vector3 target_position)
     // 現在位置を取得
     geometry_msgs::msg::Pose current_pose = move_group_arm_->getCurrentPose().pose;
 
-
-
+//ハンコを掴みに行く動作
 
 control_gripper(60);
     geometry_msgs::msg::Pose stamp;
@@ -232,15 +231,10 @@ move_group_gripper_->move();
 control_arm(stamp.position.x, stamp.position.y, stamp.position.z, 90, 0, 90);
 }
 
-
-
+//初期姿勢に戻す
 init_pose();
 
-
-
-
-	
-
+//ハンコを押す動作
 
     // 経路を4分割して(target_position.x(), target_position.y(), 0.3)まで移動
     for (int i = 1; i <= move_steps; i++) {

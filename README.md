@@ -8,13 +8,12 @@
 
 # セットアップ, ビルド
 
-ROS 2及びCRANE-X7のセットアップ, ビルドの方法に関しては[こちら](https://github.com/cit22ros2/crane_x7_simple_examples)の以下をを確認してください.
+ROS 2及びCRANE-X7のセットアップ, ビルドの方法に関しては[https://github.com/cit22ros2/crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples)の以下をを確認してください.
 - このパッケージを使う前に
   - ROS 2及びCRANE-X7セットアップ
 - このパッケージの使い方
   - インストール
-  - ビルド  
-[(https://github.com/cit22ros2/crane_x7_simple_examples)](https://github.com/cit22ros2/crane_x7_simple_examples)
+  - ビルド
 
 # このパッケージの使い方
 

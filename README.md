@@ -46,6 +46,7 @@ ros2 run crane_x7_stamp press_the_stamp use_sim_time:='true'
 ```
 
 ### press_the_stamp_tf
+[![YouTubeの動画](https://img.youtube.com/vi/GrYh_InDjL0/0.jpg)](https://youtu.be/GrYh_InDjL0)
 他のノード(fixed_position_publisher)から流れてきた座標の情報をもとにハンコを押します.
 - 実機用
 ```

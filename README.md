@@ -13,7 +13,7 @@ ROS 2及びCRANE-X7のセットアップ, ビルドの方法に関しては[こ�
   - ROS 2及びCRANE-X7セットアップ
 - このパッケージの使い方
   - インストール
-  - ビルド
+  - ビルド  
 [(https://github.com/cit22ros2/crane_x7_simple_examples)](https://github.com/cit22ros2/crane_x7_simple_examples)
 
 # このパッケージの使い方

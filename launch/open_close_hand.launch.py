@@ -1,5 +1,7 @@
 # SPDX-FileCopyrightText: 2023 Keitaro Nakamura
 # SPDX-License-Identifier: Apache 2.0
+# このファイルはKeitaro Nakamuraによって作成されたpick_and_move.launch.pyをコピーし, Haruto Yamamotoが一部を改変したものです.
+# 変更内容　動作するパッケージ名とプログラム名の変更
 import os
 
 from ament_index_python.packages import get_package_share_directory

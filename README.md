@@ -5,6 +5,7 @@
 # 環境
 - Ubuntu 22.04
 - ROS 2 Humble
+- OpenCV 4.5.4
 
 # セットアップ, ビルド
 

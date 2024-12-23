@@ -57,7 +57,7 @@ def generate_launch_description():
     example_node = Node(
                         package='crane_x7_stamp',
                         #executable='press_the_stamp',
-			executable='pick_and_move',
+			executable='press_the_stamp_tf',
                         output='screen',
                         parameters=[{'robot_description': description_loader.load()},
                                     robot_description_semantic,

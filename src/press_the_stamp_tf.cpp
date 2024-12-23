@@ -211,47 +211,31 @@ control_gripper(60);
 
  stamp.position.x = 0.25;
  stamp.position.y = -0.15;
- stamp.position.z = 0.1;
- //q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(90));
- // target_pose.orientation = tf2::toMsg(q);
- //move_group_arm_.setPoseTarget(target_pose);
- //move_group_arm_.move();
- //move_group_gripper_->setJointValueTarget(joint_values);
- move_group_gripper_->move();
-control_arm(stamp.position.x, stamp.position.y, stamp.position.z, 90, 0, 90);
-
- stamp.position.x = 0.3;
- stamp.position.y = -0.15;
- stamp.position.z = 0.1;
- // q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(90));
- // target_pose.orientation = tf2::toMsg(q);
- //move_group_arm_.setPoseTarget(target_pose);
- //move_group_arm_.move();
-// move_group_gripper_->setJointValueTarget(joint_values);
- move_group_gripper_->move();
-control_arm(stamp.position.x, stamp.position.y, stamp.position.z, 90, 0, 90);
-  //掴む
- // gripper_joint_values[0] = angles::from_degrees(15);
- //move_group_gripper_.setJointValueTarget(gripper_joint_values);
- //move_group_gripper_.move();
-// move_group_gripper_->setJointValueTarget(joint_values);
- move_group_gripper_->move();
- control_gripper(0);
-  // 持ち上げる
- stamp.position.x = 0.3;
- stamp.position.y = 0.0;
  stamp.position.z = 0.3;
- // q.setRPY(angles::from_degrees(90), angles::from_degrees(0), angles::from_degrees(90));
- // target_pose.orientation = tf2::toMsg(q);
- //move_group_arm_.setPoseTarget(target_pose);
- //move_group_arm_.move();
-// move_group_gripper_->setJointValueTarget(joint_values);
  move_group_gripper_->move();
 control_arm(stamp.position.x, stamp.position.y, stamp.position.z, 90, 0, 90);
+for(int f = 1; f < 5; f++){
+stamp.position.x += 0.01;
+move_group_gripper_->move();
+control_arm(stamp.position.x, stamp.position.y, stamp.position.z, 90, 0, 90);
+}
+  //掴む
+ //move_group_gripper_->move();
+ control_gripper(15);
+ control_gripper(15);
+ control_gripper(15);
+
+ // 持ち上げる
+for(int g = 1; g < 5; g++){
+stamp.position.z += 0.05;
+move_group_gripper_->move();
+control_arm(stamp.position.x, stamp.position.y, stamp.position.z, 90, 0, 90);
+}
+
+
+
 init_pose();
 
-    // 現在位置を取得
-   // geometry_msgs::msg::Pose current_pose = move_group_arm_->getCurrentPose().pose;
 
 
 
@@ -259,7 +243,7 @@ init_pose();
 
 
     // 経路を4分割して(target_position.x(), target_position.y(), 0.3)まで移動
-    for (int i = 1; i <= move_steps; ++i) {
+    for (int i = 1; i <= move_steps; i++) {
         geometry_msgs::msg::Pose intermediate_pose;
         intermediate_pose.position.x = current_pose.position.x + (target_position.x() - current_pose.position.x) * i / move_steps;
         intermediate_pose.position.y = current_pose.position.y + (target_position.y() - current_pose.position.y) * i / move_steps;

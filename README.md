@@ -85,7 +85,7 @@ ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py use_sim_time:='true'
 - このパッケージはApache License 2.0のもとに, [crane_x7_simple_examples](https://github.com/cit22ros2/crane_x7_simple_examples)の一部を改変して利用しています.
   - 以下のファイルを改変し, 新規ファイルを作成しました.
     - color_detection.cppをもとに, fixed_position_publisher.cpp
-    - pick_and_move.cppをもとに, press_the_stamp.cppおよびopen_close_hand
+    - pick_and_move.cppをもとに, press_the_stamp.cppおよびopen_close_hand.cpp
     - pick_and_move_tf.cppをもとに, press_the_stamp_tf.cpp
     - camera_picking.launch.pyをもとに, press_the_stamp_tf.launch.py
     - pick_and_move.launch.pyをもとに, press_the_stamp.launch.py

@@ -58,17 +58,6 @@ ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py
 ros2 launch crane_x7_stamp press_the_stamp_tf.launch.py use_sim_time:='true'
 ```
 
-### open_close_hand
-ハンコを掴ませるためにハンドを5秒間開きます.
-- for real machine
-```
-ros2 launch crane_x7_stamp open_close_hand.launch.py
-```
-- for Gazebo
-```
-ros2 launch crane_x7_stamp open_close_hand.launch.py use_sim_time:='true'
-```
-
 # 注意
 - 動作が大きくなることがあるので, 使用時は周囲に十分注意してください.
 - マニピュレータ動作終了後, ```Ctrl+C```でプログラムを終了してください.
@@ -79,8 +68,7 @@ ros2 launch crane_x7_stamp open_close_hand.launch.py use_sim_time:='true'
 ## srcファイルの説明
 - fixed_position_publisher.cpp
   - 座標を送信します.
-  - press_the_stamp_tf.cppに座標を送信するために使用しています.
-- open_close_hand
+- open_close_hand.cpp
   - ハンドを5秒間開き, その後閉じます.
 - press_the_stamp.cpp
   - このノード(プログラム)内で指定した座標にハンコを押します.
